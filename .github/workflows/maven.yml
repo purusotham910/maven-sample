@@ -29,7 +29,7 @@ jobs:
       run: |
         echo "present working direcrtory"
         pwd && ls -la
-        VERSION=$(cat VERSION)
+        VERSION=$(cat /VERSION)
         echo "::set-output name=version::$VERSION"
 
     - name: Bump Version
