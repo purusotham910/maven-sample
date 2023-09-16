@@ -21,6 +21,10 @@ jobs:
 
     steps:
 
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+
     - name: Present workign directory
       run: pwd
 
@@ -28,8 +32,8 @@ jobs:
       id: read_version
       run: |
         echo "present working direcrtory"
-        cd ${{ github.workspace }} && ls -la
-        VERSION=$(cat ${{ github.workspace }}/VERSION)
+        pwd && ls -la
+        VERSION=$(cat VERSION)
         echo "::set-output name=version::$VERSION"
 
     - name: Bump Version
