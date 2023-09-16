@@ -61,7 +61,7 @@ jobs:
         git commit -m "Bump version to $NEW_VERSION"
         git push 
       env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        GITHUB_TOKEN: "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"
 
     - uses: actions/checkout@v3
     - name: Set up JDK 17
