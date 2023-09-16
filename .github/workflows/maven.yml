@@ -61,7 +61,7 @@ jobs:
         git config user.email "pannelaa910@gmail.com"
         git add VERSION
         git commit -m "Bump version to $NEW_VERSION"
-        git push 
+        git push --force
       env:
         GITHUB_TOKEN: "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"
 
