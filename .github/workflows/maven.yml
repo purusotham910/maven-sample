@@ -28,9 +28,8 @@ jobs:
       id: read_version
       run: |
         echo "present working direcrtory"
-        pwd && ls -la
-        cwd
-        VERSION=$(cat /VERSION)
+        cd ${{ github.workspace }} && ls -la
+        VERSION=$(cat ${{ github.workspace }}/VERSION)
         echo "::set-output name=version::$VERSION"
 
     - name: Bump Version
