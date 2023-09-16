@@ -14,6 +14,11 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  pull-requests: write
+  contents: write
+  repository-projects: write
+
 jobs:
   build:
 
@@ -50,20 +55,29 @@ jobs:
         # Write the new version back to the VERSION file
         echo "$NEW_VERSION" > VERSION
         echo "Bumped version to $NEW_VERSION"
-
       # Commit and push the updated version
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
 
+    - name: latest current version
+      id: write_version
+      run: |
+        echo "present working direcrtory"
+        pwd && ls -la
+        VERSION=$(cat VERSION)
+        echo "::set-output name=version::$VERSION"
+
     - name: Commit and Push
       run: |
         git config user.name "balakishore123"
-        git config user.email "pannelaa910@gmail.com"
+        git config user.email "balakishore096@gmail.com"
         git add VERSION
+        git status
         git commit -m "Bump version to $NEW_VERSION"
-        git push --force
+        git status
+        git push origin main --force
       env:
-        GITHUB_TOKEN: "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"
+        GITHUB_TOKEN: "${{ secrets.TOKEN_GITHUB }}"
 
 
     - uses: actions/checkout@v3
@@ -79,5 +93,5 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: my-artifact-package.${{ steps.read_version.outputs.version }}
+        name: my-artifact-package.${{ steps.write_version.outputs.version }}
         path: ${{ github.workspace }}/target/my-app-1.0-SNAPSHOT.jar
