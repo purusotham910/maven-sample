@@ -57,13 +57,13 @@ jobs:
 
     - name: Commit and Push
       run: |
-        git config user.name "purusotham910"
+        git config user.name "balakishore123"
         git config user.email "pannelaa910@gmail.com"
         git add VERSION
         git commit -m "Bump version to $NEW_VERSION"
         git push --force
       env:
-        GITHUB_TOKEN: "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"
+        GITHUB_TOKEN: "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"
 
 
     - uses: actions/checkout@v3
@@ -79,5 +79,5 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: my-artifact-package
+        name: my-artifact-package.${{ steps.read_version.outputs.version }}
         path: ${{ github.workspace }}/target/my-app-1.0-SNAPSHOT.jar
