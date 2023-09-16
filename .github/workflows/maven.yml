@@ -27,8 +27,11 @@ jobs:
     - name: Read current version
       id: read_version
       run: |
+        echo "present working direcrtory"
+        pwd
         VERSION=$(cat VERSION)
         echo "::set-output name=version::$VERSION"
+
     - name: Bump Version
       id: bump_version
       run: |
