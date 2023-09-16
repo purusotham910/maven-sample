@@ -61,7 +61,9 @@ jobs:
         git config user.email "pannelaa910@gmail.com"
         git add VERSION
         git commit -m "Bump version to $NEW_VERSION"
-        git push https://github.com/purusotham910/maven-sample.git HEAD:main
+        git push 
+    env:
+      GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
 
     - uses: actions/checkout@v3
     - name: Set up JDK 17
