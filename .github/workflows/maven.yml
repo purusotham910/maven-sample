@@ -57,8 +57,8 @@ jobs:
 
     - name: Commit and Push
       run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
+        git config user.name "purusotham910"
+        git config user.email "pannelaa910@gmail.com"
         git add VERSION
         git commit -m "Bump version to $NEW_VERSION"
         git push
