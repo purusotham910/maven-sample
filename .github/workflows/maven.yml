@@ -28,7 +28,7 @@ jobs:
       id: read_version
       run: |
         echo "present working direcrtory"
-        pwd
+        pwd && ls -la
         VERSION=$(cat VERSION)
         echo "::set-output name=version::$VERSION"
 
