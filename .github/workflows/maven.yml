@@ -24,11 +24,24 @@ jobs:
     - name: Present workign directory
       run: pwd
 
-    - name: Bump version
-      uses: remorses/bump-version@js
-      with:
-          version_file: ./VERSION
-      env:
+      - name: Bump Version
+        run: |
+          # Read the current version from package.json
+          current_version=$(node -p -e "require('./package.json').version")
+          
+          # Calculate the new version (for example, increment the minor version)
+          new_version=$(echo $current_version | awk -F. '{$2=$2+1; OFS="."; print $1,$2,$3}')
+          
+          # Update package.json with the new version
+          node -e "const fs = require('fs'); const package = require('./package.json'); package.version = '$new_version'; fs.writeFileSync('./package.json', JSON.stringify(package, null, 2));"
+
+          # Commit the updated version
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git commit -m "Bump version to $new_version" package.json
+          git push
+
+        env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
 
     - uses: actions/checkout@v3
