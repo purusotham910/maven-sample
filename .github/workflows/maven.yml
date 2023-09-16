@@ -24,25 +24,37 @@ jobs:
     - name: Present workign directory
       run: pwd
 
-    - name: Bump Version
+    - name: Read current version
+      id: read_version
       run: |
-        # Read the current version from package.json
-        current_version=$(node -p -e "require('./package.json').version")
+        VERSION=$(cat VERSION)
+        echo "::set-output name=version::$VERSION"
+    - name: Bump Version
+      id: bump_version
+      run: |
+        # Read the current version from the previous step's output
+        CURRENT_VERSION="${{ steps.read_version.outputs.version }}"
         
         # Calculate the new version (for example, increment the minor version)
-        new_version=$(echo $current_version | awk -F. '{$2=$2+1; OFS="."; print $1,$2,$3}')
+        IFS='.' read -r -a version_parts <<< "$CURRENT_VERSION"
+        NEW_MINOR_VERSION=$((version_parts[1] + 1))
+        NEW_VERSION="${version_parts[0]}.${NEW_MINOR_VERSION}.${version_parts[2]}"
         
-        # Update package.json with the new version
-        node -e "const fs = require('fs'); const package = require('./package.json'); package.version = '$new_version'; fs.writeFileSync('./package.json', JSON.stringify(package, null, 2));"
+        # Write the new version back to the VERSION file
+        echo "$NEW_VERSION" > VERSION
+        echo "Bumped version to $NEW_VERSION"
 
-        # Commit the updated version
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git commit -m "Bump version to $new_version" package.json
-        git push
-
+      # Commit and push the updated version
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+
+      - name: Commit and Push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add VERSION
+          git commit -m "Bump version to $NEW_VERSION"
+          git push
 
     - uses: actions/checkout@v3
     - name: Set up JDK 17
