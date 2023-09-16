@@ -62,8 +62,8 @@ jobs:
         git add VERSION
         git commit -m "Bump version to $NEW_VERSION"
         git push 
-    env:
-      GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
 
     - uses: actions/checkout@v3
     - name: Set up JDK 17
